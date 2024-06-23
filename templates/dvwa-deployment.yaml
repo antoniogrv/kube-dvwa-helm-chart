@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
       - name: {{ .Values.Web.DNS }}
-        image: {{ .Values.Web.Container.Repository }}/{{ .Values.Web.Container.Image.Name }}:{{ .Chart.AppVersion }}
+        {{- $image_version := .Chart.AppVersion | toString }}
+        image: {{ printf "%s/%s:%s" .Values.Web.Container.Repository .Values.Web.Container.Image.Name $image_version }}
         env:
         - name: DB_SERVER
           value: {{ .Values.Database.DNS }}

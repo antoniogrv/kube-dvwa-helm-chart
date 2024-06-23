@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
       - name: {{ .Values.Database.DNS }}
-        image: {{ .Values.Database.Container.Repository }}/{{ .Values.Database.Container.Image.Name }}:{{ .Values.Database.Container.Image.Version }}
+        {{- $image_version := .Values.Database.Container.Image.Version | toString }}
+        image: {{ printf "%s/%s:%s" .Values.Database.Container.Repository .Values.Database.Container.Image.Name $image_version }}
         env:
         - name: MYSQL_DATABASE
           value: dvwa
