@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.Database.DNS }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.Database.DNS }}
+  serviceName: {{ .Values.Database.DNS }}
+  replicas: {{ .Values.Database.Replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.Database.DNS }}
+    spec:
+      containers:
+      - name: {{ .Values.Database.DNS }}
+        image: {{ .Values.Database.Container.Repository }}/{{ .Values.Database.Container.Image.Name }}:{{ .Values.Database.Container.Image.Version }}
+        env:
+        - name: MYSQL_DATABASE
+          value: dvwa
+        - name: MYSQL_PASSWORD
+          value: p@ssw0rd
+        - name: MYSQL_ROOT_PASSWORD
+          value: dvwa
+        - name: MYSQL_USER
+          value: dvwa
+        ports:
+        - containerPort: {{ .Values.Database.Port }}
+        volumeMounts:
+        - name: {{ .Values.Database.DNS }}
+          mountPath: {{ .Values.Database.Volume.Mount_Path }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Values.Database.DNS }}
+    spec:
+      accessModes: [ {{ .Values.Database.Volume.Access_Mode }} ]
+      resources:
+        requests:
+          storage: {{ .Values.Database.Volume.Minimum_Storage }}

@@ -1,0 +1,23 @@
+Database:
+  Port: 3306
+  DNS: "db"
+  Replicas: 1
+  Container:
+    Repository: "docker.io/library"
+    Image: 
+      Name: "mariadb" # MySQL, PostgresSQL...
+      Version: 10
+  Volume:
+    Access_Mode: "ReadWriteOnce"
+    Minimum_Storage: "50Mi"
+    Mount_Path: "/var/lib/mysql"
+
+Web:
+  Port: 80
+  DNS: "dvwa"
+  Replicas: 1
+  Container:
+    Repository: "ghcr.io/digininja"
+    Image: 
+      Name: "dvwa"
+      # Refer to chart configuration (Chart.yaml) to set the DVWA image release 
