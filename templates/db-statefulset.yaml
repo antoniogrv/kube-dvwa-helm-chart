@@ -17,15 +17,9 @@ spec:
       - name: {{ .Values.Database.DNS }}
         {{- $image_version := .Values.Database.Container.Image.Version | toString }}
         image: {{ printf "%s/%s:%s" .Values.Database.Container.Repository .Values.Database.Container.Image.Name $image_version }}
-        env:
-        - name: MYSQL_DATABASE
-          value: dvwa
-        - name: MYSQL_PASSWORD
-          value: p@ssw0rd
-        - name: MYSQL_ROOT_PASSWORD
-          value: dvwa
-        - name: MYSQL_USER
-          value: dvwa
+        envFrom:
+        - secretRef:
+            name: db-credentials
         ports:
         - containerPort: {{ .Values.Database.Port }}
         volumeMounts:
